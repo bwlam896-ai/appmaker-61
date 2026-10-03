@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محاكي تطبيق صلاتي وأذكاري</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: 'Cairo', sans-serif; }
+        .phone-frame {
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+    </style>
+</head>
+<body class="bg-slate-900 min-h-screen flex items-center justify-center p-4">
+
+    <div class="phone-frame w-[380px] h-[780px] bg-slate-900 rounded-[40px] border-[8px] border-slate-700 overflow-hidden flex flex-col relative text-white">
+        
+        <!-- Status Bar -->
+        <div class="h-8 bg-slate-950 flex justify-between items-center px-6 text-xs text-slate-400 select-none">
+            <span>04:35</span>
+            <div class="flex gap-1.5 items-center">
+                <i data-lucide="signal" class="w-3 h-3"></i>
+                <i data-lucide="wifi" class="w-3 h-3"></i>
+                <i data-lucide="battery" class="w-3 h-3"></i>
+            </div>
+        </div>
+
+        <!-- App Header -->
+        <div class="bg-emerald-700 p-4 shadow-md flex justify-between items-center">
+            <div>
+                <h1 class="text-lg font-bold text-white">صلاتي وأذكاري</h1>
+                <p class="text-xs text-emerald-100" id="current-date">الخميس، 15 رمضان</p>
+            </div>
+            <button onclick="triggerVibrate()" class="p-2 bg-emerald-600 hover:bg-emerald-500 rounded-full transition" title="اهتزاز">
+                <i data-lucide="vibrate" class="w-5 h-5 text-white"></i>
+            </button>
+        </div>
+
+        <!-- Main Scrollable Content -->
+        <div class="flex-1 overflow-y-auto p-4 space-y-4">
+            
+            <!-- Prayer Times Card -->
+            <div class="bg-slate-800 rounded-2xl p-4 shadow border border-slate-700">
+                <div class="flex justify-between items-center mb-3">
+                    <h2 class="text-sm font-bold text-emerald-400 flex items-center gap-1.5">
+                        <i data-lucide="clock" class="w-4 h-4"></i> أوقات الصلاة
+                    </h2>
+                    <span class="text-xs bg-emerald-900/50 text-emerald-300 px-2 py-0.5 rounded-full">القاهرة</span>
+                </div>
+                
+                <div class="grid grid-cols-5 gap-1 text-center">
+                    <div class="bg-slate-700/50 p-2 rounded-xl">
+                        <p class="text-[10px] text-slate-400">الفجر</p>
+                        <p class="text-xs font-bold text-white mt-1">04:15</p>
+                    </div>
+                    <div class="bg-slate-700/50 p-2 rounded-xl">
+                        <p class="text-[10px] text-slate-400">الشروق</p>
+                        <p class="text-xs font-bold text-white mt-1">05:45</p>
+                    </div>
+                    <div class="bg-emerald-950/60 border border-emerald-500/30 p-2 rounded-xl">
+                        <p class="text-[10px] text-emerald-300">الظهر</p>
+                        <p class="text-xs font-bold text-emerald-200 mt-1">12:05</p>
+                    </div>
+                    <div class="bg-slate-700/50 p-2 rounded-xl">
+                        <p class="text-[10px] text-slate-400">العصر</p>
+                        <p class="text-xs font-bold text-white mt-1">03:30</p>
+                    </div>
+                    <div class="bg-slate-700/50 p-2 rounded-xl">
+                        <p class="text-[10px] text-slate-400">المغرب</p>
+                        <p class="text-xs font-bold text-white mt-1">06:20</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Azkar Section -->
+            <div class="bg-slate-800 rounded-2xl p-4 shadow border border-slate-700 flex flex-col">
+                <div class="flex justify-between items-center mb-3">
+                    <h2 class="text-sm font-bold text-emerald-400 flex items-center gap-1.5">
+                        <i data-lucide="book-open" class="w-4 h-4"></i> العداد والأذكار
+                    </h2>
+                    <span id="zikr-title" class="text-xs text-slate-400">سبحان الله</span>
+                </div>
+
+                <!-- Zikr Display Area -->
+                <div class="bg-slate-900/60 p-4 rounded-xl text-center mb-3 border border-slate-700/50">
+                    <p id="zikr-text" class="text-sm text-slate-200 font-medium leading-relaxed mb-3">سبحان الله وبحمده، سبحان الله العظيم</p>
+                    <div class="inline-flex items-center gap-2 bg-emerald-900/40 px-3 py-1 rounded-full border border-emerald-500/20">
+                        <span class="text-xs text-emerald-300">المتبقي:</span>
+                        <span id="counter-value" class="text-lg font-bold text-emerald-400">33</span>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="decrementCounter()" class="bg-slate-700 hover:bg-slate-600 text-white py-2.5 px-4 rounded-xl font-medium text-xs transition flex items-center justify-center gap-1.5">
+                        <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> إعادة ضبط
+                    </button>
+                    <button onclick="incrementCounter()" class="bg-emerald-600 hover:bg-emerald-500 text-white py-2.5 px-4 rounded-xl font-medium text-xs transition shadow-lg shadow-emerald-900/50 flex items-center justify-center gap-1.5">
+                        <i data-lucide="plus" class="w-3.5 h-3.5"></i> تسبيح
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quick Azkar List -->
+            <div class="bg-slate-800 rounded-2xl p-4 shadow border border-slate-700">
+                <h2 class="text-sm font-bold text-emerald-400 mb-2 flex items-center gap-1.5">
+                    <i data-lucide="list" class="w-4 h-4"></i> أذكار مختارة
+                </h2>
+                <div class="space-y-2">
+                    <div onclick="selectZikr('سبحان الله', 'سبحان الله وبحمده', 33)" class="bg-slate-700/40 hover:bg-slate-700/70 p-2.5 rounded-xl cursor-pointer transition flex justify-between items-center text-xs">
+                        <span>سبحان الله وبحمده</span>
+                        <span class="bg-emerald-900/60 text-emerald-300 px-2 py-0.5 rounded text-[10px]">33 مرة</span>
+                    </div>
+                    <div onclick="selectZikr('الحمد لله', 'الحَمْدُ للّهِ رَبِّ العَالَمِينَ', 33)" class="bg-slate-700/40 hover:bg-slate-700/70 p-2.5 rounded-xl cursor-pointer transition flex justify-between items-center text-xs">
+                        <span>الحمد لله رب العالمين</span>
+                        <span class="bg-emerald-900/60 text-emerald-300 px-2 py-0.5 rounded text-[10px]">33 مرة</span>
+                    </div>
+                    <div onclick="selectZikr('الله أكبر', 'اللَّهُ أَكْبَرُ كَبِيرًا', 34)" class="bg-slate-700/40 hover:bg-slate-700/70 p-2.5 rounded-xl cursor-pointer transition flex justify-between items-center text-xs">
+                        <span>الله أكبر كبيراً</span>
+                        <span class="bg-emerald-900/60 text-emerald-300 px-2 py-0.5 rounded text-[10px]">34 مرة</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Navigation Bar -->
+        <div class="h-12 bg-slate-950 flex justify-around items-center px-4 border-t border-slate-800">
+            <button class="text-emerald-400 flex flex-col items-center">
+                <i data-lucide="home" class="w-5 h-5"></i>
+            </button>
+            <button class="text-slate-500 hover:text-slate-300 flex flex-col items-center">
+                <i data-lucide="compass" class="w-5 h-5"></i>
+            </button>
+            <button class="text-slate-500 hover:text-slate-300 flex flex-col items-center">
+                <i data-lucide="settings" class="w-5 h-5"></i>
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        let counter = 33;
+        const counterEl = document.getElementById('counter-value');
+        const zikrTextEl = document.getElementById('zikr-text');
+        const zikrTitleEl = document.getElementById('zikr-title');
+
+        function updateDisplay() {
+            counterEl.textContent = counter;
+        }
+
+        function incrementCounter() {
+            if (counter > 0) {
+                counter--;
+                updateDisplay();
+            }
+        }
+
+        function decrementCounter() {
+            counter = 33;
+            updateDisplay();
+        }
+
+        function selectZikr(title, text, count) {
+            zikrTitleEl.textContent = title;
+            zikrTextEl.textContent = text;
+            counter = count;
+            updateDisplay();
+        }
+
+        function triggerVibrate() {
+            if ('vibrate' in navigator) {
+                navigator.vibrate(50);
+            }
+            const btn = document.querySelector('button[onclick="triggerVibrate()"]');
+            btn.classList.add('bg-emerald-400');
+            setTimeout(() => btn.classList.remove('bg-emerald-400'), 200);
+        }
+    </script>
+</body>
+</html>

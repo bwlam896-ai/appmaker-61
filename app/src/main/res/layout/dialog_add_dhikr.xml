@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:background="@color/card_bg">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add_dhikr_dialog_title"
+        android:textColor="@color/text_primary"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="16dp" />
+
+    <EditText
+        android:id="@+id/etDhikrText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/dhikr_text_hint"
+        android:textColor="@color/text_primary"
+        android:textColorHint="@color/text_secondary"
+        android:backgroundTint="@color/primary"
+        android:minLines="2"
+        android:textSize="14sp"
+        android:inputType="textMultiLine" />
+
+    <EditText
+        android:id="@+id/etDhikrVirtue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="@string/dhikr_virtue_hint"
+        android:textColor="@color/text_primary"
+        android:textColorHint="@color/text_secondary"
+        android:backgroundTint="@color/primary"
+        android:textSize="13sp"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/etDhikrTarget"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="@string/dhikr_target_hint"
+        android:text="33"
+        android:textColor="@color/text_primary"
+        android:textColorHint="@color/text_secondary"
+        android:backgroundTint="@color/primary"
+        android:textSize="13sp"
+        android:inputType="number" />
+
+    <Spinner
+        android:id="@+id/spCategory"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="@color/primary" />
+
+</LinearLayout>

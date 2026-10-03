@@ -1,371 +1,225 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0b1320">
+    android:orientation="vertical"
+    android:background="@color/background_dark">
 
-    <!-- Top Header -->
-    <LinearLayout
-        android:id="@+id/headerLayout"
+    <!-- Top AppBar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#047857"
-        android:orientation="horizontal"
-        android:padding="16dp"
-        android:gravity="center_vertical"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/primary_dark"
+        android:elevation="4dp">
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="4dp"
+            android:paddingEnd="12dp">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="صلاتي وأذكاري"
-                android:textColor="#ffffff"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:layout_centerVertical="true"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvDate"
+                <TextView
+                    android:id="@+id/tvAppTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name"
+                    android:textColor="@color/text_primary"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvTotalCounts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="مجموع التسبيحات: 0"
+                    android:textColor="@color/accent"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAddDhikr"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="الخميس، 15 رمضان"
-                android:textColor="#a7f3d0"
+                android:layout_height="38dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:backgroundTint="@color/primary"
+                android:text="@string/add_dhikr_action"
+                android:textColor="#FFFFFF"
                 android:textSize="12sp"
-                android:layout_marginTop="2dp" />
-        </LinearLayout>
+                app:cornerRadius="8dp" />
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="🕌"
-            android:textSize="24sp" />
-    </LinearLayout>
-
-    <!-- Scrollable Body -->
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:fillViewport="true"
-        app:layout_constraintTop_toBottomOf="@id/headerLayout"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="12dp">
 
-            <!-- Prayer Times Card -->
-            <LinearLayout
+            <!-- Active Selected Dhikr Big Counter Card -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#151f32"
-                android:orientation="vertical"
-                android:padding="16dp"
-                android:layout_marginBottom="16dp">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="14dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="🕒 أوقات الصلاة"
-                        android:textColor="#34d399"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        android:layout_alignParentEnd="true" />
-
-                    <TextView
-                        android:id="@+id/tvCity"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="القاهرة"
-                        android:textColor="#10b981"
-                        android:background="#064e3b"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="10dp"
-                        android:paddingTop="3dp"
-                        android:paddingBottom="3dp"
-                        android:textSize="11sp"
-                        android:layout_alignParentStart="true" />
-                </RelativeLayout>
+                app:cardBackgroundColor="@color/card_bg"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="6dp"
+                app:strokeColor="@color/primary"
+                app:strokeWidth="1.2dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="5">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:background="#1e293b"
-                        android:padding="8dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="الفجر" android:textColor="#94a3b8" android:textSize="10sp"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="04:15" android:textColor="#ffffff" android:textSize="12sp" android:textStyle="bold" android:layout_marginTop="4dp"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:background="#1e293b"
-                        android:padding="8dp"
-                        android:layout_marginStart="3dp"
-                        android:layout_marginEnd="3dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="الشروق" android:textColor="#94a3b8" android:textSize="10sp"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="05:45" android:textColor="#ffffff" android:textSize="12sp" android:textStyle="bold" android:layout_marginTop="4dp"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:background="#047857"
-                        android:padding="8dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="الظهر" android:textColor="#a7f3d0" android:textSize="10sp"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="12:05" android:textColor="#ffffff" android:textSize="12sp" android:textStyle="bold" android:layout_marginTop="4dp"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:background="#1e293b"
-                        android:padding="8dp"
-                        android:layout_marginStart="3dp"
-                        android:layout_marginEnd="3dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="العصر" android:textColor="#94a3b8" android:textSize="10sp"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="03:30" android:textColor="#ffffff" android:textSize="12sp" android:textStyle="bold" android:layout_marginTop="4dp"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:background="#1e293b"
-                        android:padding="8dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="المغرب" android:textColor="#94a3b8" android:textSize="10sp"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="06:20" android:textColor="#ffffff" android:textSize="12sp" android:textStyle="bold" android:layout_marginTop="4dp"/>
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- Counter Card -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#151f32"
-                android:orientation="vertical"
-                android:padding="16dp"
-                android:layout_marginBottom="16dp">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="📖 العداد والأذكار"
-                        android:textColor="#34d399"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        android:layout_alignParentEnd="true" />
-
-                    <TextView
-                        android:id="@+id/tvCurrentZikrBadge"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="الله أكبر"
-                        android:textColor="#94a3b8"
-                        android:textSize="11sp"
-                        android:layout_alignParentStart="true" />
-                </RelativeLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#0b1320"
                     android:orientation="vertical"
-                    android:padding="18dp"
-                    android:gravity="center"
-                    android:layout_marginBottom="14dp">
+                    android:padding="16dp"
+                    android:gravity="center_horizontal">
 
+                    <!-- Header inside card -->
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/tvCurrentCategory"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/badge_bg"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="4dp"
+                            android:text="ذكر مختار"
+                            android:textColor="@color/accent"
+                            android:textSize="11sp" />
+
+                        <TextView
+                            android:id="@+id/tvCurrentTarget"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:text="الهدف: 100"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+
+                    <!-- Dhikr Main Text -->
                     <TextView
-                        android:id="@+id/tvZikrText"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/tvCurrentDhikrText"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="اللهُ أَكْبَرُ كَبِيرًا"
-                        android:textColor="#ffffff"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
+                        android:layout_marginTop="12dp"
                         android:gravity="center"
-                        android:layout_marginBottom="12dp" />
-
-                    <TextView
-                        android:id="@+id/tvCounter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="المتبقي: 34"
-                        android:textColor="#34d399"
-                        android:background="#064e3b"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp"
-                        android:paddingTop="6dp"
-                        android:paddingBottom="6dp"
+                        android:lineSpacingMultiplier="1.25"
+                        android:text="سُبْحَانَ اللَّهِ وَبِحَمْدِهِ ، سُبْحَانَ اللَّهِ الْعَظِيمِ"
+                        android:textColor="@color/text_primary"
                         android:textSize="18sp"
                         android:textStyle="bold" />
+
+                    <!-- Virtue -->
+                    <TextView
+                        android:id="@+id/tvCurrentVirtue"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:gravity="center"
+                        android:text="حبيبتان إلى الرحمن، خفيفتان على اللسان، ثقيلتان في الميزان"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp" />
+
+                    <!-- Counter Circle Button -->
+                    <FrameLayout
+                        android:id="@+id/btnTapCounter"
+                        android:layout_width="160dp"
+                        android:layout_height="160dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/circle_button_bg"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tvCounterValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textColor="#FFFFFF"
+                                android:textSize="44sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/tap_to_count"
+                                android:textColor="@color/accent"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+                    </FrameLayout>
+
+                    <!-- Control Actions -->
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnReset"
+                            style="@style/Widget.MaterialComponents.Button.TextButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/reset_label"
+                            android:textColor="@color/rose_delete"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/tvCompletionPercent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:text="0%"
+                            android:textColor="@color/accent"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
                 </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:id="@+id/btnReset"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:text="↺ إعادة ضبط"
-                        android:textColor="#ffffff"
-                        android:backgroundTint="#1e293b"
-                        android:layout_marginEnd="6dp" />
-
-                    <Button
-                        android:id="@+id/btnTasbeeh"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:text="+ تسبيح"
-                        android:textColor="#ffffff"
-                        android:backgroundTint="#047857"
-                        android:layout_marginStart="6dp" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- Selected Azkar Section -->
-            <LinearLayout
+            <!-- List Header -->
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginTop="18dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/selected_azkar_title"
+                android:textColor="@color/text_primary"
+                android:textSize="15sp"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="📑 أذكار مختارة"
-                    android:textColor="#34d399"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="10dp" />
-
-                <!-- Zikr 1 -->
-                <RelativeLayout
-                    android:id="@+id/rowZikr1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#151f32"
-                    android:padding="14dp"
-                    android:layout_marginBottom="8dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="سبحان الله وبحمده"
-                        android:textColor="#ffffff"
-                        android:textSize="14sp"
-                        android:layout_alignParentEnd="true" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="33 مرة"
-                        android:textColor="#34d399"
-                        android:textSize="11sp"
-                        android:layout_alignParentStart="true" />
-                </RelativeLayout>
-
-                <!-- Zikr 2 -->
-                <RelativeLayout
-                    android:id="@+id/rowZikr2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#151f32"
-                    android:padding="14dp"
-                    android:layout_marginBottom="8dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="الحمد لله رب العالمين"
-                        android:textColor="#ffffff"
-                        android:textSize="14sp"
-                        android:layout_alignParentEnd="true" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="33 مرة"
-                        android:textColor="#34d399"
-                        android:textSize="11sp"
-                        android:layout_alignParentStart="true" />
-                </RelativeLayout>
-
-                <!-- Zikr 3 -->
-                <RelativeLayout
-                    android:id="@+id/rowZikr3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#151f32"
-                    android:padding="14dp"
-                    android:layout_marginBottom="8dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="الله أكبر كبيراً"
-                        android:textColor="#ffffff"
-                        android:textSize="14sp"
-                        android:layout_alignParentEnd="true" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="34 مرة"
-                        android:textColor="#34d399"
-                        android:textSize="11sp"
-                        android:layout_alignParentStart="true" />
-                </RelativeLayout>
-
-            </LinearLayout>
+            <!-- Recycler View of Azkar -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvAzkarList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false" />
 
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</LinearLayout>

@@ -1,14 +1,19 @@
 <resources>
-    <string name="app_name">صلاتي وأذكاري</string>
-    <string name="prayer_times">أوقات الصلاة</string>
-    <string name="fajr">الفجر</string>
-    <string name="sunrise">الشروق</string>
-    <string name="dhuhr">الظهر</string>
-    <string name="asr">العصر</string>
-    <string name="maghrib">المغرب</string>
-    <string name="isha">العشاء</string>
-    <string name="azkar_title">العداد والأذكار</string>
-    <string name="default_zikr">سبحان الله وبحمده، سبحان الله العظيم</string>
-    <string name="btn_tasbeeh">تسبيح</string>
-    <string name="btn_reset">إعادة ضبط</string>
+    <string name="app_name">الأذكار المختارة</string>
+    <string name="add_dhikr_action">زد ذكراً</string>
+    <string name="selected_azkar_title">قائمة الأذكار المختارة</string>
+    <string name="tap_to_count">اضغط للذكر</string>
+    <string name="reset_label">تصفير</string>
+    <string name="target_label">الهدف: %d</string>
+    <string name="category_default">ذكر عام</string>
+    <string name="add_dhikr_dialog_title">زد ذكراً إلى الأذكار المختارة</string>
+    <string name="dhikr_text_hint">نص الذكر المبارك...</string>
+    <string name="dhikr_virtue_hint">فضله وثوابه (اختياري)...</string>
+    <string name="dhikr_target_hint">العدد المستهدف (مثال: 33)</string>
+    <string name="btn_save">إضافة وحفظ</string>
+    <string name="btn_cancel">إلغاء</string>
+    <string name="total_counts_label">مجموع التسبيحات: %d</string>
+    <string name="delete_confirm_title">حذف الذكر</string>
+    <string name="delete_confirm_msg">هل أنت متأكد من حذف هذا الذكر من المختارة؟</string>
+    <string name="error_empty_text">يرجى كتابة نص الذكر أولاً</string>
 </resources>

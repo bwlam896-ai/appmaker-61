@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0b1320">
+
+    <!-- Top Header -->
+    <LinearLayout
+        android:id="@+id/headerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#047857"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="صلاتي وأذكاري"
+                android:textColor="#ffffff"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="الخميس، 15 رمضان"
+                android:textColor="#a7f3d0"
+                android:textSize="12sp"
+                android:layout_marginTop="2dp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🕌"
+            android:textSize="24sp" />
+    </LinearLayout>
+
+    <!-- Scrollable Body -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@id/headerLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Prayer Times Card -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#151f32"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:layout_marginBottom="16dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="14dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🕒 أوقات الصلاة"
+                        android:textColor="#34d399"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:layout_alignParentEnd="true" />
+
+                    <TextView
+                        android:id="@+id/tvCity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="القاهرة"
+                        android:textColor="#10b981"
+                        android:background="#064e3b"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:paddingTop="3dp"
+                        android:paddingBottom="3dp"
+                        android:textSize="11sp"
+                        android:layout_alignParentStart="true" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="5">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="#1e293b"
+                        android:padding="8dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="الفجر" android:textColor="#94a3b8" android:textSize="10sp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="04:15" android:textColor="#ffffff" android:textSize="12sp" android:textStyle="bold" android:layout_marginTop="4dp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="#1e293b"
+                        android:padding="8dp"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginEnd="3dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="الشروق" android:textColor="#94a3b8" android:textSize="10sp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="05:45" android:textColor="#ffffff" android:textSize="12sp" android:textStyle="bold" android:layout_marginTop="4dp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="#047857"
+                        android:padding="8dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="الظهر" android:textColor="#a7f3d0" android:textSize="10sp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="12:05" android:textColor="#ffffff" android:textSize="12sp" android:textStyle="bold" android:layout_marginTop="4dp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="#1e293b"
+                        android:padding="8dp"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginEnd="3dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="العصر" android:textColor="#94a3b8" android:textSize="10sp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="03:30" android:textColor="#ffffff" android:textSize="12sp" android:textStyle="bold" android:layout_marginTop="4dp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="#1e293b"
+                        android:padding="8dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="المغرب" android:textColor="#94a3b8" android:textSize="10sp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="06:20" android:textColor="#ffffff" android:textSize="12sp" android:textStyle="bold" android:layout_marginTop="4dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Counter Card -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#151f32"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:layout_marginBottom="16dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="📖 العداد والأذكار"
+                        android:textColor="#34d399"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:layout_alignParentEnd="true" />
+
+                    <TextView
+                        android:id="@+id/tvCurrentZikrBadge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="الله أكبر"
+                        android:textColor="#94a3b8"
+                        android:textSize="11sp"
+                        android:layout_alignParentStart="true" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#0b1320"
+                    android:orientation="vertical"
+                    android:padding="18dp"
+                    android:gravity="center"
+                    android:layout_marginBottom="14dp">
+
+                    <TextView
+                        android:id="@+id/tvZikrText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="اللهُ أَكْبَرُ كَبِيرًا"
+                        android:textColor="#ffffff"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:layout_marginBottom="12dp" />
+
+                    <TextView
+                        android:id="@+id/tvCounter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="المتبقي: 34"
+                        android:textColor="#34d399"
+                        android:background="#064e3b"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="6dp"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btnReset"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:text="↺ إعادة ضبط"
+                        android:textColor="#ffffff"
+                        android:backgroundTint="#1e293b"
+                        android:layout_marginEnd="6dp" />
+
+                    <Button
+                        android:id="@+id/btnTasbeeh"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:text="+ تسبيح"
+                        android:textColor="#ffffff"
+                        android:backgroundTint="#047857"
+                        android:layout_marginStart="6dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Selected Azkar Section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="📑 أذكار مختارة"
+                    android:textColor="#34d399"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="10dp" />
+
+                <!-- Zikr 1 -->
+                <RelativeLayout
+                    android:id="@+id/rowZikr1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#151f32"
+                    android:padding="14dp"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="سبحان الله وبحمده"
+                        android:textColor="#ffffff"
+                        android:textSize="14sp"
+                        android:layout_alignParentEnd="true" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="33 مرة"
+                        android:textColor="#34d399"
+                        android:textSize="11sp"
+                        android:layout_alignParentStart="true" />
+                </RelativeLayout>
+
+                <!-- Zikr 2 -->
+                <RelativeLayout
+                    android:id="@+id/rowZikr2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#151f32"
+                    android:padding="14dp"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="الحمد لله رب العالمين"
+                        android:textColor="#ffffff"
+                        android:textSize="14sp"
+                        android:layout_alignParentEnd="true" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="33 مرة"
+                        android:textColor="#34d399"
+                        android:textSize="11sp"
+                        android:layout_alignParentStart="true" />
+                </RelativeLayout>
+
+                <!-- Zikr 3 -->
+                <RelativeLayout
+                    android:id="@+id/rowZikr3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#151f32"
+                    android:padding="14dp"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="الله أكبر كبيراً"
+                        android:textColor="#ffffff"
+                        android:textSize="14sp"
+                        android:layout_alignParentEnd="true" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="34 مرة"
+                        android:textColor="#34d399"
+                        android:textSize="11sp"
+                        android:layout_alignParentStart="true" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

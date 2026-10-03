@@ -1,0 +1,174 @@
+name: Build, Sign & Release Android Packages (APK & AAB)
+
+on:
+  push:
+    paths:
+      - '.github/workflows/build.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle Build Environment
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: '8.2'
+
+      - name: Prepare Project Structure & Clean Java Artifacts
+        run: |
+          if [ -f "settings.gradle" ]; then
+            sed -i 's/rootProject.name\s*=.*/rootProject.name = "app_61"/g' settings.gradle || true
+            sed -i 's/FAIL_ON_PROJECT_REPOS/PREFER_SETTINGS/g' settings.gradle || true
+          fi
+          printf "plugins {\n    id 'com.android.application' version '8.2.2' apply false\n    id 'org.jetbrains.kotlin.android' version '1.9.22' apply false\n}\n" > build.gradle
+          if ls app/src/main/java/**/*.kt 1> /dev/null 2>&1; then
+            find app/src/main/java -type f -name "MainActivity.java" -delete || true
+          fi
+          mkdir -p app/src/main/assets/www
+          if [ -f "preview.html" ] && [ ! -f "app/src/main/assets/www/index.html" ]; then
+            cp -f preview.html app/src/main/assets/www/index.html
+          fi
+          rm -f preview.html || true
+          for d in mipmap-hdpi mipmap-xhdpi mipmap-xxhdpi mipmap-xxxhdpi drawable; do
+            mkdir -p "app/src/main/res/$d"
+          done
+          if [ -f "app_icon.png" ] && [ -s "app_icon.png" ]; then
+            for d in mipmap-hdpi mipmap-xhdpi mipmap-xxhdpi mipmap-xxxhdpi; do
+              cp -f app_icon.png "app/src/main/res/$d/ic_launcher.png"
+              cp -f app_icon.png "app/src/main/res/$d/ic_launcher_round.png"
+            done
+            cp -f app_icon.png app/src/main/res/drawable/splash_logo.png || true
+          fi
+          sed -i 's|@android:drawable/sym_def_app_icon|@mipmap/ic_launcher|g' app/src/main/AndroidManifest.xml || true
+          sed -i 's|android:icon="[^"]*"|android:icon="@mipmap/ic_launcher"|g' app/src/main/AndroidManifest.xml || true
+          sed -i 's|android:roundIcon="[^"]*"|android:roundIcon="@mipmap/ic_launcher_round"|g' app/src/main/AndroidManifest.xml || true
+          python3 - << 'PYEOF'
+          import os, glob, re
+          app_pkg = 'com.appmaker.app'
+          if os.path.exists('app/build.gradle'):
+              with open('app/build.gradle', 'r', encoding='utf-8') as f:
+                  bg = f.read()
+              m_app = re.search(r'(namespace|applicationId)\s*=?\s*["\']([^"\']+)["\']', bg)
+              if m_app:
+                  app_pkg = m_app.group(2)
+          if os.path.exists('app/src/main/AndroidManifest.xml'):
+              with open('app/src/main/AndroidManifest.xml', 'r', encoding='utf-8') as f:
+                  mf = f.read()
+              mf = re.sub(r'android:name="\.MainActivity"', f'android:name="{app_pkg}.MainActivity"', mf)
+              with open('app/src/main/AndroidManifest.xml', 'w', encoding='utf-8') as f:
+                  f.write(mf)
+          os.makedirs('app/src/main/res/layout', exist_ok=True)
+          item_zikr_path = 'app/src/main/res/layout/item_zikr.xml'
+          if not os.path.exists(item_zikr_path):
+              with open(item_zikr_path, 'w', encoding='utf-8') as f:
+                  f.write('''<?xml version="1.0" encoding="utf-8"?>\n<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/cardZikr" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" app:cardBackgroundColor="#113826" app:cardCornerRadius="16dp" app:cardElevation="3dp" app:strokeColor="#1F5A3E" app:strokeWidth="1dp"><LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp"><TextView android:id="@+id/tvZikrText" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="#FFFFFF" android:textSize="16sp"/><RelativeLayout android:layout_width="match_parent" android:layout_marginTop="12dp"><TextView android:id="@+id/tvZikrNote" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#A3E635" android:textSize="12sp"/><LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:orientation="horizontal"><ImageView android:id="@+id/btnResetSingle" android:layout_width="28dp" android:layout_height="28dp" android:layout_marginEnd="8dp" android:src="@android:drawable/ic_menu_rotate" app:tint="#A3E635"/><com.google.android.material.button.MaterialButton android:id="@+id/btnCounter" android:layout_width="64dp" android:layout_height="40dp" android:textSize="16sp" android:textStyle="bold" app:cornerRadius="12dp"/></LinearLayout></RelativeLayout></LinearLayout></com.google.android.material.card.MaterialCardView>''')
+          target_java_dir = os.path.join('app/src/main/java', *app_pkg.split('.'))
+          os.makedirs(target_java_dir, exist_ok=True)
+          for path in glob.glob('app/src/main/java/**/*.kt', recursive=True):
+              with open(path, 'r', encoding='utf-8') as f:
+                  content = f.read()
+              lines = content.splitlines()
+              pkg_line = f'package {app_pkg}'
+              imports = {
+                  'import android.content.Context',
+                  'import android.view.View',
+                  'import android.widget.LinearLayout',
+                  'import android.os.Vibrator',
+                  'import android.os.VibrationEffect',
+                  'import android.os.Build',
+                  'import android.view.HapticFeedbackConstants',
+                  f'import {app_pkg}.R'
+              }
+              body_lines = []
+              for line in lines:
+                  s = line.strip()
+                  if s.startswith('package '):
+                      pkg_line = f'package {app_pkg}'
+                  elif s.startswith('import '):
+                      if not s.endswith('.R'):
+                          imports.add(s)
+                  else:
+                      body_lines.append(line)
+              body = '\n'.join(body_lines)
+              body = re.sub(r'setView\(([^)]+)\)', r'setView(\1 as android.view.View)', body)
+              body = body.replace('as android.view.View as android.view.View', 'as android.view.View')
+              body = body.replace('CONTEXT_IGNORE_SECURITY', 'Context.VIBRATOR_SERVICE')
+              body = re.sub(r'(\.text\s*=\s*)([a-zA-Z0-9_]+)(\s*\n|\s*;)', r'\1\2.toString()\3', body)
+              final_content = pkg_line + '\n\n' + '\n'.join(sorted(list(imports))) + '\n\n' + body
+              file_name = os.path.basename(path)
+              target_file_path = os.path.join(target_java_dir, file_name)
+              with open(target_file_path, 'w', encoding='utf-8') as f:
+                  f.write(final_content)
+              if os.path.abspath(path) != os.path.abspath(target_file_path):
+                  try:
+                      os.remove(path)
+                  except:
+                      pass
+          PYEOF
+          find app/src/main/res/layout -name "*.xml" | while read xmlFile; do
+            sed -i 's/android:dir="[^"]*"//g' "$xmlFile" || true
+            sed -i 's/app:layout_bottomToBottomOf/layout_bottomToBottomOf/g' "$xmlFile" || true
+            sed -i 's/layout_bottomToBottomOf/app:layout_constraintBottom_toBottomOf/g' "$xmlFile" || true
+          done
+          mkdir -p keystore app
+          # التحقق من وجود المفتاح الدائم أو توليده وحفظه في المستودع لمرة واحدة للأبد
+          if [ -f "keystore/release.keystore" ]; then
+            echo "المفتاح الدائم موجود، سيتم اعتماده لضمان قبول التحديثات."
+            cp keystore/release.keystore release.keystore
+          else
+            echo "توليد وتثبيت مفتاح التوقيع الدائم للتطبيق..."
+            keytool -genkeypair -v -keystore keystore/release.keystore -alias appkey -keyalg RSA -keysize 2048 -validity 10000 -storepass appmaker123 -keypass appmaker123 -dname "CN=AppMaker, OU=Mobile, O=AppMaker, L=Algiers, S=Algiers, C=DZ"
+            cp keystore/release.keystore release.keystore
+            git config --global user.name "github-actions[bot]"
+            git config --global user.email "github-actions[bot]@users.noreply.github.com"
+            git add keystore/release.keystore
+            git commit -m "حفظ مفتاح التوقيع الدائم للتطبيق [skip ci]" || true
+            git push origin HEAD || true
+          fi
+          cp release.keystore app/release.keystore || true
+          printf "org.gradle.jvmargs=-Xmx2048m -Dfile.encoding=UTF-8\nandroid.useAndroidX=true\nandroid.nonTransitiveRClass=true\n" > gradle.properties
+
+      - name: Compile and Assemble Android Packages
+        run: |
+          gradle assembleRelease bundleRelease -x lint -x test --stacktrace --no-daemon
+
+      - name: Sign and Rename Android Packages
+        run: |
+          BUILD_TOOLS_DIR=$(ls -d $ANDROID_HOME/build-tools/* | sort -V | tail -n 1)
+          find app/build/outputs/apk/release -name "*.apk" | while read APK_FILE; do
+            $BUILD_TOOLS_DIR/zipalign -v -p 4 "$APK_FILE" aligned.apk || cp "$APK_FILE" aligned.apk
+            $BUILD_TOOLS_DIR/apksigner sign --ks release.keystore --ks-pass pass:appmaker123 --key-pass pass:appmaker123 --out "app_61-v1.0.9.apk" aligned.apk
+            break
+          done
+          find app/build/outputs/bundle/release -name "*.aab" | while read AAB_FILE; do
+            cp "$AAB_FILE" "app_61-v1.0.9.aab"
+            break
+          done
+
+      - name: Publish Release Packages to GitHub Releases
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/heads/')
+        with:
+          tag_name: v1.0.9
+          name: "App_61 v1.0.9 (Official Release)"
+          files: |
+            app_61-v1.0.9.apk
+            app_61-v1.0.9.aab
+            release.keystore
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

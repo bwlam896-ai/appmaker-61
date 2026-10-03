@@ -1,0 +1,32 @@
+{
+  "id": 61,
+  "name": "مأذن",
+  "packageId": "com.appmaker.myapp",
+  "versionCode": 1,
+  "versionName": "1.0.9",
+  "type": "Kotlin (AI)",
+  "orientation": "portrait",
+  "fullscreen": false,
+  "admobAppId": "",
+  "permissions": {
+    "camera": false,
+    "audio": false,
+    "storage": false,
+    "mediaImages": false,
+    "internet": true,
+    "wifi": false,
+    "networkState": false,
+    "bluetooth": false,
+    "nfc": false,
+    "location": false,
+    "coarseLocation": false,
+    "backgroundLocation": false,
+    "notifications": false,
+    "vibrate": false,
+    "wakeLock": false,
+    "boot": false,
+    "foregroundService": false,
+    "biometric": false
+  },
+  "updatedAt": "2026-10-03T10:25:45.966Z"
+}

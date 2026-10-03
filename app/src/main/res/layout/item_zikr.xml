@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="12dp"
+    android:layout_marginBottom="8dp"
+    android:background="#1e293b"
+    android:gravity="center_vertical">
+
+    <TextView
+        android:id="@+id/tvItemZikrTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="#ffffff"
+        android:textSize="14sp"
+        android:text="سبحان الله وبحمده" />
+
+    <TextView
+        android:id="@+id/tvItemZikrCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#065f46"
+        android:textColor="#a7f3d0"
+        android:textSize="12sp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:text="33 مرة" />
+
+</LinearLayout>

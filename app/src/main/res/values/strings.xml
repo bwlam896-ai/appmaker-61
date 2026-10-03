@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">صلاتي وأذكاري</string>
+    <string name="prayer_times">أوقات الصلاة</string>
+    <string name="fajr">الفجر</string>
+    <string name="sunrise">الشروق</string>
+    <string name="dhuhr">الظهر</string>
+    <string name="asr">العصر</string>
+    <string name="maghrib">المغرب</string>
+    <string name="isha">العشاء</string>
+    <string name="azkar_title">العداد والأذكار</string>
+    <string name="default_zikr">سبحان الله وبحمده، سبحان الله العظيم</string>
+    <string name="btn_tasbeeh">تسبيح</string>
+    <string name="btn_reset">إعادة ضبط</string>
+</resources>

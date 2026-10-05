@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Azkar Sélectionné</string>
+    <string name="add_dhikr_action">Ajouter Dhikr</string>
+    <string name="selected_azkar_title">Liste des Azkar Sélectionnés</string>
+    <string name="tap_to_count">Appuyer pour compter</string>
+    <string name="reset_label">Réinitialiser</string>
+    <string name="target_label">Objectif: %d</string>
+    <string name="category_default">Dhikr Général</string>
+    <string name="add_dhikr_dialog_title">Ajouter un Dhikr à la Liste</string>
+    <string name="dhikr_text_hint">Texte du dhikr béni...</string>
+    <string name="dhikr_virtue_hint">Sa vertu et récompense (optionnel)...</string>
+    <string name="dhikr_target_hint">Nombre cible (ex: 33)</string>
+    <string name="btn_save">Enregistrer</string>
+    <string name="btn_cancel">Annuler</string>
+    <string name="total_counts_label">Total des Comptes: %d</string>
+    <string name="delete_confirm_title">Supprimer le Dhikr</string>
+    <string name="delete_confirm_msg">Êtes-vous sûr de vouloir supprimer ce dhikr?</string>
+    <string name="error_empty_text">Veuillez d\'abord écrire le texte du dhikr</string>
+    <string name="reset_confirm_title">Réinitialiser le compteur</string>
+    <string name="reset_confirm_msg">Voulez-vous réinitialiser ce compteur de dhikr?</string>
+    <string name="yes">Oui</string>
+    <string name="no">Annuler</string>
+    <string name="min_dhikr_error">Au moins un dhikr doit rester dans la liste</string>
+    <string name="success_added">Dhikr ajouté avec succès</string>
+    <string name="select_language">Choisir la langue</string>
+</resources>

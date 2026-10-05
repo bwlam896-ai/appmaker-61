@@ -51,14 +51,24 @@
           <i data-lucide="sparkles" class="w-5 h-5"></i>
         </div>
         <div>
-          <h1 class="text-base font-bold text-emerald-100 leading-tight">الأذكار المختارة</h1>
-          <p class="text-[11px] text-emerald-400">زد أذكارك وطهّر لسانك بذكر الله</p>
+          <h1 id="app-title" class="text-base font-bold text-emerald-100 leading-tight">الأذكار المختارة</h1>
+          <p id="app-subtitle" class="text-[11px] text-emerald-400">زد أذكارك وطهّر لسانك بذكر الله</p>
         </div>
       </div>
-      <button onclick="openModal()" class="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white rounded-lg text-xs font-semibold shadow-sm transition">
-        <i data-lucide="plus-circle" class="w-4 h-4"></i>
-        <span>زد ذكراً</span>
-      </button>
+      
+      <div class="flex items-center gap-2">
+        <!-- Language Selector Dropdown -->
+        <select id="lang-select" onchange="changeLanguage(this.value)" class="bg-emerald-800/60 border border-emerald-600/40 text-emerald-100 text-xs rounded-lg px-2 py-1.5 focus:outline-none cursor-pointer font-semibold">
+          <option value="ar">العربية</option>
+          <option value="en">English</option>
+          <option value="fr">Français</option>
+        </select>
+
+        <button onclick="openModal()" class="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white rounded-lg text-xs font-semibold shadow-sm transition">
+          <i data-lucide="plus-circle" class="w-4 h-4"></i>
+          <span id="add-btn-text">زد ذكراً</span>
+        </button>
+      </div>
     </div>
 
     <!-- Main Content Area -->
@@ -70,7 +80,7 @@
         <div class="w-full flex justify-between items-center text-xs text-emerald-400/80 mb-2">
           <span class="bg-emerald-950/70 border border-emerald-700/40 px-2.5 py-1 rounded-md text-[11px]" id="current-category">الذكر الحالي</span>
           <span class="flex items-center gap-1">
-            <span>الهدف:</span>
+            <span id="target-label-text">الهدف:</span>
             <span id="target-count" class="font-bold text-emerald-300">100</span>
           </span>
         </div>
@@ -98,7 +108,7 @@
           <button id="counter-btn" onclick="incrementCurrent()" class="tap-effect absolute inset-3 rounded-full bg-gradient-to-tr from-emerald-800 to-teal-600 active:from-emerald-700 active:to-teal-500 flex flex-col items-center justify-center shadow-[0_0_25px_rgba(16,185,129,0.3)] border-2 border-emerald-400/40">
             <span id="current-counter-value" class="text-4xl font-extrabold text-white tracking-wider">0</span>
             <span class="text-[11px] text-emerald-200 mt-1 flex items-center gap-1">
-              <i data-lucide="hand" class="w-3.5 h-3.5"></i> اضغط للذكر
+              <i data-lucide="hand" class="w-3.5 h-3.5"></i> <span id="tap-to-count-text">اضغط للذكر</span>
             </span>
           </button>
         </div>
@@ -107,7 +117,7 @@
         <div class="w-full flex items-center justify-between pt-2 border-t border-slate-700/50 mt-3 px-2 text-xs">
           <button onclick="resetCurrentCounter()" class="flex items-center gap-1 text-slate-400 hover:text-rose-400 transition">
             <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
-            <span>تصفير</span>
+            <span id="reset-text">تصفير</span>
           </button>
           
           <div class="flex items-center gap-3">
@@ -126,10 +136,10 @@
       <div class="flex items-center justify-between mt-1 px-1">
         <h2 class="text-sm font-bold text-emerald-300 flex items-center gap-1.5">
           <i data-lucide="list-check" class="w-4 h-4 text-emerald-400"></i>
-          <span>قائمة الأذكار المختارة</span>
+          <span id="list-title-text">قائمة الأذكار المختارة</span>
           <span id="dhikr-badge-count" class="bg-emerald-900/60 text-emerald-300 text-[10px] px-2 py-0.5 rounded-full border border-emerald-600/30">0</span>
         </h2>
-        <span class="text-[11px] text-slate-400">مجموع التسبيحات: <strong id="total-spins" class="text-emerald-400 font-bold">0</strong></span>
+        <span class="text-[11px] text-slate-400"><span id="total-spins-label">مجموع التسبيحات:</span> <strong id="total-spins" class="text-emerald-400 font-bold">0</strong></span>
       </div>
 
       <!-- Azkar List Container -->
@@ -145,7 +155,7 @@
         <div class="flex justify-between items-center mb-3">
           <h3 class="text-base font-bold text-emerald-300 flex items-center gap-1.5">
             <i data-lucide="bookmark-plus" class="w-4 h-4"></i>
-            <span>زد ذكراً إلى الأذكار المختارة</span>
+            <span id="modal-title-text">زد ذكراً إلى الأذكار المختارة</span>
           </h3>
           <button onclick="closeModal()" class="text-slate-400 hover:text-white">
             <i data-lucide="x" class="w-5 h-5"></i>
@@ -154,22 +164,22 @@
 
         <form id="add-dhikr-form" onsubmit="handleAddNewDhikr(event)" class="space-y-3">
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">نص الذكر المبارك *</label>
+            <label id="label-text-field" class="block text-xs font-semibold text-slate-300 mb-1">نص الذكر المبارك *</label>
             <textarea id="input-text" required rows="2" placeholder="اكتب الذكر كاملاً مع التشكيل إن أمكن..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-emerald-500 font-quran"></textarea>
           </div>
 
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">فضل الذكر أو ملاحظة (اختياري)</label>
+            <label id="label-virtue-field" class="block text-xs font-semibold text-slate-300 mb-1">فضل الذكر أو ملاحظة (اختياري)</label>
             <input type="text" id="input-virtue" placeholder="مثال: من قالها غفرت خطاياه" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-500">
           </div>
 
           <div class="grid grid-cols-2 gap-3">
             <div>
-              <label class="block text-xs font-semibold text-slate-300 mb-1">العدد المستهدف</label>
+              <label id="label-target-field" class="block text-xs font-semibold text-slate-300 mb-1">العدد المستهدف</label>
               <input type="number" id="input-target" min="1" max="10000" value="33" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-500 text-center font-bold">
             </div>
             <div>
-              <label class="block text-xs font-semibold text-slate-300 mb-1">التصنيف</label>
+              <label id="label-category-field" class="block text-xs font-semibold text-slate-300 mb-1">التصنيف</label>
               <select id="input-category" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-500">
                 <option value="أذكار الصباح والمساء">أذكار الصباح والمساء</option>
                 <option value="أذكار الصلاة">أذكار الصلاة</option>
@@ -181,10 +191,10 @@
           </div>
 
           <div class="flex gap-2 pt-2">
-            <button type="submit" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 rounded-xl text-xs shadow-md transition">
+            <button type="submit" id="btn-save-text" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 rounded-xl text-xs shadow-md transition">
               حفظ وإضافة الذكر
             </button>
-            <button type="button" onclick="closeModal()" class="px-4 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs transition">
+            <button type="button" onclick="closeModal()" id="btn-cancel-text" class="px-4 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs transition">
               إلغاء
             </button>
           </div>
@@ -196,66 +206,150 @@
     <div class="h-14 bg-slate-900 border-t border-slate-800 flex items-center justify-around text-slate-400 text-xs px-2 z-20">
       <button class="flex flex-col items-center gap-1 text-emerald-400">
         <i data-lucide="book-open" class="w-5 h-5"></i>
-        <span>أذكاري</span>
+        <span id="nav-my-azkar-text">أذكاري</span>
       </button>
       <button onclick="openModal()" class="flex flex-col items-center gap-1 hover:text-emerald-400 transition">
         <i data-lucide="plus-circle" class="w-5 h-5"></i>
-        <span>زد الذكر</span>
+        <span id="nav-add-text">زد الذكر</span>
       </button>
       <button onclick="shareAppSummary()" class="flex flex-col items-center gap-1 hover:text-emerald-400 transition">
         <i data-lucide="share-2" class="w-5 h-5"></i>
-        <span>مشاركة الأجر</span>
+        <span id="nav-share-text">مشاركة الأجر</span>
       </button>
     </div>
 
   </div>
 
   <script>
-    // State management
-    const defaultAzkar = [
-      {
-        id: 1,
-        text: "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ ، سُبْحَانَ اللَّهِ الْعَظِيمِ",
-        virtue: "حبيبتان إلى الرحمن، خفيفتان على اللسان، ثقيلتان في الميزان",
-        category: "استغفار وتوبة",
-        count: 0,
-        target: 100
+    // Translation Dictionary
+    const i18n = {
+      ar: {
+        title: "الأذكار المختارة",
+        subtitle: "زد أذكارك وطهّر لسانك بذكر الله",
+        addBtn: "زد ذكراً",
+        targetLabel: "الهدف:",
+        tapToCount: "اضغط للذكر",
+        reset: "تصفير",
+        listTitle: "قائمة الأذكار المختارة",
+        totalSpins: "مجموع التسبيحات:",
+        modalTitle: "زد ذكراً إلى الأذكار المختارة",
+        labelText: "نص الذكر المبارك *",
+        labelVirtue: "فضل الذكر أو ملاحظة (اختياري)",
+        labelTarget: "العدد المستهدف",
+        labelCategory: "التصنيف",
+        placeholderText: "اكتب الذكر كاملاً مع التشكيل إن أمكن...",
+        placeholderVirtue: "مثال: من قالها غفرت خطاياه",
+        btnSave: "حفظ وإضافة الذكر",
+        btnCancel: "إلغاء",
+        myAzkar: "أذكاري",
+        shareReward: "مشاركة الأجر",
+        confirmReset: "هل تريد تصفير عدّاد هذا الذكر؟",
+        confirmDelete: "هل أنت متأكد من حذف هذا الذكر من المختارة؟",
+        alertMinDhikr: "يجب أن يبقى ذكر واحد على الأقل في قائمتك المختارة.",
+        copied: "تم نسخ الملخص لمشاركته مع أحبابك!",
+        shareText: "الحمد لله، أنجزت {total} تسبيحة وذكر عبر تطبيق \"الأذكار المختارة\". شاركني الأجر واذكر الله الآن!",
+        categories: {
+          morningEvening: "أذكار الصباح والمساء",
+          prayer: "أذكار الصلاة",
+          repentance: "استغفار وتوبة",
+          hadith: "أدعية مأثورة",
+          general: "ذكر عام"
+        }
       },
-      {
-        id: 2,
-        text: "أَسْتَغْفِرُ اللَّهَ الْعَظِيمَ وَأَتُوبُ إِلَيْهِ",
-        virtue: "من لزم الاستغفار جعل الله له من كل هم فرجاً",
-        category: "استغفار وتوبة",
-        count: 0,
-        target: 70
+      en: {
+        title: "Selected Azkar",
+        subtitle: "Increase your remembrance and purify your tongue",
+        addBtn: "Add Dhikr",
+        targetLabel: "Target:",
+        tapToCount: "Tap to Count",
+        reset: "Reset",
+        listTitle: "Selected Azkar List",
+        totalSpins: "Total Counts:",
+        modalTitle: "Add Dhikr to Selected List",
+        labelText: "Blessed Dhikr Text *",
+        labelVirtue: "Virtue or Note (Optional)",
+        labelTarget: "Target Count",
+        labelCategory: "Category",
+        placeholderText: "Write the full dhikr text...",
+        placeholderVirtue: "e.g., Whoever says it, their sins are forgiven",
+        btnSave: "Save and Add Dhikr",
+        btnCancel: "Cancel",
+        myAzkar: "My Azkar",
+        shareReward: "Share Reward",
+        confirmReset: "Do you want to reset this dhikr counter?",
+        confirmDelete: "Are you sure you want to delete this dhikr?",
+        alertMinDhikr: "At least one dhikr must remain in your selected list.",
+        copied: "Summary copied to clipboard!",
+        shareText: "Alhamdulillah, I completed {total} dhikr repetitions using the 'Selected Azkar' app. Share the reward and remember Allah now!",
+        categories: {
+          morningEvening: "Morning & Evening",
+          prayer: "Prayer Azkar",
+          repentance: "Repentance & Istighfar",
+          hadith: "Prophetic Supplications",
+          general: "General Dhikr"
+        }
       },
-      {
-        id: 3,
-        text: "لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ الْعَلِيِّ الْعَظِيمِ",
-        virtue: "كنز من كنوز الجنة وباب من أبوابها",
-        category: "أدعية مأثورة",
-        count: 0,
-        target: 33
-      },
-      {
-        id: 4,
-        text: "اللَّهُمَّ صَلِّ وَسَلِّمْ عَلَى نَبِيِّنَا مُحَمَّدٍ",
-        virtue: "من صلى عليّ صلاة صلى الله عليه بها عشراً",
-        category: "أذكار الصلاة",
-        count: 0,
-        target: 100
-      },
-      {
-        id: 5,
-        text: "لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",
-        virtue: "تعدل عتق عشر رقاب وكتب له مائة حسنة ومحي عنه مائة سيئة",
-        category: "أذكار الصباح والمساء",
-        count: 0,
-        target: 100
+      fr: {
+        title: "Azkar Sélectionné",
+        subtitle: "Augmentez vos invocations et purifiez votre langue",
+        addBtn: "Ajouter Dhikr",
+        targetLabel: "Objectif:",
+        tapToCount: "Appuyer pour compter",
+        reset: "Réinitialiser",
+        listTitle: "Liste des Azkar Sélectionnés",
+        totalSpins: "Total des Comptes:",
+        modalTitle: "Ajouter un Dhikr à la Liste",
+        labelText: "Texte du Dhikr Béni *",
+        labelVirtue: "Vertu ou Note (Optionnel)",
+        labelTarget: "Nombre Cible",
+        labelCategory: "Catégorie",
+        placeholderText: "Écrivez le texte complet du dhikr...",
+        placeholderVirtue: "ex: Quiconque le dit, ses péchés sont pardonnés",
+        btnSave: "Enregistrer et Ajouter",
+        btnCancel: "Annuler",
+        myAzkar: "Mes Azkar",
+        shareReward: "Partager la récompense",
+        confirmReset: "Voulez-vous réinitialiser ce compteur de dhikr?",
+        confirmDelete: "Êtes-vous sûr de vouloir supprimer ce dhikr?",
+        alertMinDhikr: "Au moins un dhikr doit rester dans votre liste sélectionnée.",
+        copied: "Résumé copié dans le presse-papiers!",
+        shareText: "Alhamdulillah, j'ai complété {total} répétitions de dhikr avec l'application 'Selected Azkar'. Partagez la récompense et invoquez Allah maintenant!",
+        categories: {
+          morningEvening: "Matin & Soir",
+          prayer: "Invocations de Prière",
+          repentance: "Repentance & Istighfar",
+          hadith: "Invocations Prophétiques",
+          general: "Dhikr Général"
+        }
       }
-    ];
+    };
 
-    let azkar = JSON.parse(localStorage.getItem('azkar_list_app')) || defaultAzkar;
+    const defaultAzkarTranslations = {
+      ar: [
+        { id: 1, text: "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ ، سُبْحَانَ اللَّهِ الْعَظِيمِ", virtue: "حبيبتان إلى الرحمن، خفيفتان على اللسان، ثقيلتان في الميزان", category: "استغفار وتوبة", count: 0, target: 100 },
+        { id: 2, text: "أَسْتَغْفِرُ اللَّهَ الْعَظِيمَ وَأَتُوبُ إِلَيْهِ", virtue: "من لزم الاستغفار جعل الله له من كل هم فرجاً", category: "استغفار وتوبة", count: 0, target: 70 },
+        { id: 3, text: "لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ الْعَلِيِّ الْعَظِيمِ", virtue: "كنز من كنوز الجنة وباب من أبوابها", category: "أدعية مأثورة", count: 0, target: 33 },
+        { id: 4, text: "اللَّهُمَّ صَلِّ وَسَلِّمْ عَلَى نَبِيِّنَا مُحَمَّدٍ", virtue: "من صلى عليّ صلاة صلى الله عليه بها عشراً", category: "أذكار الصلاة", count: 0, target: 100 },
+        { id: 5, text: "لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ", virtue: "تعدل عتق عشر رقاب وكتب له مائة حسنة ومحي عنه مائة سيئة", category: "أذكار الصباح والمساء", count: 0, target: 100 }
+      ],
+      en: [
+        { id: 1, text: "Subhan-Allahi wa bihamdihi, Subhan-Allahil-Azim", virtue: "Two words are light on the tongue, heavy in the balance, beloved to the Most Merciful", category: "Repentance & Istighfar", count: 0, target: 100 },
+        { id: 2, text: "Astaghfirullah al-Adheem wa atoobu ilayh", virtue: "If anyone constantly seeks pardon, Allah will appoint for him a way out of every distress", category: "Repentance & Istighfar", count: 0, target: 70 },
+        { id: 3, text: "La hawla wa la quwwata illa billahil-Aliyyil-Azheem", virtue: "A treasure from the treasures of Paradise", category: "Prophetic Supplications", count: 0, target: 33 },
+        { id: 4, text: "Allahumma salli wa sallim 'ala nabiyyina Muhammad", virtue: "Whoever sends blessings upon me once, Allah sends blessings upon him ten times", category: "Prayer Azkar", count: 0, target: 100 },
+        { id: 5, text: "La ilaha illallahu wahdahu la sharika lahu, lahul-mulku wa lahul-hamdu, wa huwa 'ala kulli shay'in qadir", virtue: "Equivalent to freeing ten slaves, 100 good deeds recorded, 100 bad deeds erased", category: "Morning & Evening", count: 0, target: 100 }
+      ],
+      fr: [
+        { id: 1, text: "Subhan-Allahi wa bihamdihi, Subhan-Allahil-Azim", virtue: "Deux paroles légères sur la langue, lourdes sur la balance, aimées du Tout-Miséricordieux", category: "Repentance & Istighfar", count: 0, target: 100 },
+        { id: 2, text: "Astaghfirullah al-Adheem wa atoobu ilayh", virtue: "Quiconque implore le pardon d'Allah, Allah lui ménagera une issue à chaque détresse", category: "Repentance & Istighfar", count: 0, target: 70 },
+        { id: 3, text: "La hawla wa la quwwata illa billahil-Aliyyil-Azheem", virtue: "Un trésor parmi les trésors du Paradis", category: "Invocations Prophétiques", count: 0, target: 33 },
+        { id: 4, text: "Allahumma salli wa sallim 'ala nabiyyina Muhammad", virtue: "Quiconque prie sur moi une fois, Allah prie sur lui dix fois", category: "Invocations de Prière", count: 0, target: 100 },
+        { id: 5, text: "La ilaha illallahu wahdahu la sharika lahu, lahul-mulku wa lahul-hamdu, wa huwa 'ala kulli shay'in qadir", virtue: "Équivaut à affranchir dix esclaves, 100 bonnes actions inscrites, 100 péchés effacés", category: "Matin & Soir", count: 0, target: 100 }
+      ]
+    };
+
+    let currentLang = localStorage.getItem('app_lang') || 'ar';
+    let azkar = JSON.parse(localStorage.getItem('azkar_list_app')) || defaultAzkarTranslations[currentLang];
     let selectedId = parseInt(localStorage.getItem('selected_dhikr_id')) || azkar[0].id;
     let soundEnabled = true;
     let vibrateEnabled = true;
@@ -296,12 +390,79 @@
       return azkar.find(item => item.id === selectedId) || azkar[0];
     }
 
+    function changeLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('app_lang', lang);
+      
+      // Update document direction
+      if (lang === 'ar') {
+        document.documentElement.dir = 'rtl';
+        document.body.dir = 'rtl';
+      } else {
+        document.documentElement.dir = 'ltr';
+        document.body.dir = 'ltr';
+      }
+
+      // Update select value
+      document.getElementById('lang-select').value = lang;
+
+      // Translate default items by ID to preserve counts
+      azkar.forEach(item => {
+        const defaultItem = defaultAzkarTranslations[lang].find(d => d.id === item.id);
+        if (defaultItem) {
+          item.text = defaultItem.text;
+          item.virtue = defaultItem.virtue;
+          item.category = defaultItem.category;
+        }
+      });
+
+      saveState();
+      translateUI();
+      updateActiveDisplay();
+    }
+
+    function translateUI() {
+      const t = i18n[currentLang];
+      document.getElementById('app-title').innerText = t.title;
+      document.getElementById('app-subtitle').innerText = t.subtitle;
+      document.getElementById('add-btn-text').innerText = t.addBtn;
+      document.getElementById('target-label-text').innerText = t.targetLabel;
+      document.getElementById('tap-to-count-text').innerText = t.tapToCount;
+      document.getElementById('reset-text').innerText = t.reset;
+      document.getElementById('list-title-text').innerText = t.listTitle;
+      document.getElementById('total-spins-label').innerText = t.totalSpins;
+      
+      document.getElementById('modal-title-text').innerText = t.modalTitle;
+      document.getElementById('label-text-field').innerText = t.labelText;
+      document.getElementById('label-virtue-field').innerText = t.labelVirtue;
+      document.getElementById('label-target-field').innerText = t.labelTarget;
+      document.getElementById('label-category-field').innerText = t.labelCategory;
+      document.getElementById('btn-save-text').innerText = t.btnSave;
+      document.getElementById('btn-cancel-text').innerText = t.btnCancel;
+      
+      document.getElementById('nav-my-azkar-text').innerText = t.myAzkar;
+      document.getElementById('nav-add-text').innerText = t.addBtn;
+      document.getElementById('nav-share-text').innerText = t.shareReward;
+
+      // Placeholders
+      document.getElementById('input-text').placeholder = t.placeholderText;
+      document.getElementById('input-virtue').placeholder = t.placeholderVirtue;
+
+      // Categories dropdown options
+      const catSelect = document.getElementById('input-category');
+      catSelect.options[0].text = t.categories.morningEvening;
+      catSelect.options[1].text = t.categories.prayer;
+      catSelect.options[2].text = t.categories.repentance;
+      catSelect.options[3].text = t.categories.hadith;
+      catSelect.options[4].text = t.categories.general;
+    }
+
     function updateActiveDisplay() {
       const current = getCurrentDhikr();
       if (!current) return;
 
       document.getElementById('current-dhikr-text').innerText = current.text;
-      document.getElementById('current-dhikr-virtue').innerText = current.virtue || 'فضل وثواب الذكر عظيم عند الله تعالى';
+      document.getElementById('current-dhikr-virtue').innerText = current.virtue || (currentLang === 'ar' ? 'فضل وثواب الذكر عظيم عند الله تعالى' : 'The virtue and reward of remembrance is great');
       document.getElementById('current-category').innerText = current.category || 'ذكر مختار';
       document.getElementById('target-count').innerText = current.target;
       document.getElementById('current-counter-value').innerText = current.count;
@@ -342,7 +503,7 @@
     function resetCurrentCounter() {
       const current = getCurrentDhikr();
       if (!current) return;
-      if (confirm('هل تريد تصفير عدّاد هذا الذكر؟')) {
+      if (confirm(i18n[currentLang].confirmReset)) {
         current.count = 0;
         saveState();
         updateActiveDisplay();
@@ -359,10 +520,10 @@
     function deleteDhikr(event, id) {
       event.stopPropagation();
       if (azkar.length <= 1) {
-        alert('يجب أن يبقى ذكر واحد على الأقل في قائمتك المختارة.');
+        alert(i18n[currentLang].alertMinDhikr);
         return;
       }
-      if (confirm('هل أنت متأكد من حذف هذا الذكر من المختارة؟')) {
+      if (confirm(i18n[currentLang].confirmDelete)) {
         azkar = azkar.filter(a => a.id !== id);
         if (selectedId === id) {
           selectedId = azkar[0].id;
@@ -476,12 +637,12 @@
 
     function shareAppSummary() {
       const total = azkar.reduce((a, b) => a + b.count, 0);
-      const text = `الحمد لله، أنجزت ${total} تسبيحة وذكر عبر تطبيق "الأذكار المختارة". شاركني الأجر واذكر الله الآن!`;
+      const text = i18n[currentLang].shareText.replace('{total}', total);
       if (navigator.share) {
-        navigator.share({ title: 'الأذكار المختارة', text }).catch(() => {});
+        navigator.share({ title: i18n[currentLang].title, text }).catch(() => {});
       } else {
         navigator.clipboard.writeText(text);
-        alert('تم نسخ الملخص لمشاركته مع أحبابك!');
+        alert(i18n[currentLang].copied);
       }
     }
 
@@ -495,10 +656,9 @@
 
     // Initialization
     window.onload = () => {
-      lucide.createIcons();
+      changeLanguage(currentLang);
       updateClock();
       setInterval(updateClock, 10000);
-      updateActiveDisplay();
     };
   </script>
 </body>

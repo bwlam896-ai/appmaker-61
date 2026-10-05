@@ -43,6 +43,9 @@ jobs:
           if [ -f "preview.html" ] && [ ! -f "app/src/main/assets/www/index.html" ]; then
             cp -f preview.html app/src/main/assets/www/index.html
           fi
+          if [ -f "privacy_policy.html" ]; then
+            cp -f privacy_policy.html app/src/main/assets/www/privacy_policy.html || true
+          fi
           rm -f preview.html || true
           for d in mipmap-hdpi mipmap-xhdpi mipmap-xxhdpi mipmap-xxxhdpi drawable; do
             mkdir -p "app/src/main/res/$d"
@@ -151,11 +154,11 @@ jobs:
           BUILD_TOOLS_DIR=$(ls -d $ANDROID_HOME/build-tools/* | sort -V | tail -n 1)
           find app/build/outputs/apk/release -name "*.apk" | while read APK_FILE; do
             $BUILD_TOOLS_DIR/zipalign -v -p 4 "$APK_FILE" aligned.apk || cp "$APK_FILE" aligned.apk
-            $BUILD_TOOLS_DIR/apksigner sign --ks release.keystore --ks-pass pass:appmaker123 --key-pass pass:appmaker123 --out "app_61-v1.1.1.apk" aligned.apk
+            $BUILD_TOOLS_DIR/apksigner sign --ks release.keystore --ks-pass pass:appmaker123 --key-pass pass:appmaker123 --out "app_61-v1.1.2.apk" aligned.apk
             break
           done
           find app/build/outputs/bundle/release -name "*.aab" | while read AAB_FILE; do
-            cp "$AAB_FILE" "app_61-v1.1.1.aab"
+            cp "$AAB_FILE" "app_61-v1.1.2.aab"
             break
           done
 
@@ -163,11 +166,11 @@ jobs:
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/heads/')
         with:
-          tag_name: v1.1.1
-          name: "App_61 v1.1.1 (Official Release)"
+          tag_name: v1.1.2
+          name: "App_61 v1.1.2 (Official Release)"
           files: |
-            app_61-v1.1.1.apk
-            app_61-v1.1.1.aab
+            app_61-v1.1.2.apk
+            app_61-v1.1.2.aab
             release.keystore
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

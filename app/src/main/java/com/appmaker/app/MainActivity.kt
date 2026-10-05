@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
 
@@ -41,7 +42,22 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btnTapCounter: FrameLayout
     private lateinit var btnReset: MaterialButton
     private lateinit var btnAddDhikr: MaterialButton
+    private lateinit var btnLang: MaterialButton
     private lateinit var rvAzkarList: RecyclerView
+    private lateinit var tvSelectedAzkarTitle: TextView
+    private lateinit var tvTapToCountLabel: TextView
+
+    override fun attachBaseContext(newBase: Context) {
+        val lang = newBase.getSharedPreferences("SelectedAzkarPrefs", Context.MODE_PRIVATE)
+            .getString("app_lang", "ar") ?: "ar"
+        val locale = Locale(lang)
+        Locale.setDefault(locale)
+        val config = newBase.resources.configuration
+        config.setLocale(locale)
+        config.setLayoutDirection(locale)
+        val context = newBase.createConfigurationContext(config)
+        super.attachBaseContext(context)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,7 +83,13 @@ class MainActivity : AppCompatActivity() {
         btnTapCounter = findViewById(R.id.btnTapCounter)
         btnReset = findViewById(R.id.btnReset)
         btnAddDhikr = findViewById(R.id.btnAddDhikr)
+        btnLang = findViewById(R.id.btnLang)
         rvAzkarList = findViewById(R.id.rvAzkarList)
+        tvSelectedAzkarTitle = findViewById(R.id.tvSelectedAzkarTitle)
+        tvTapToCountLabel = findViewById(R.id.tvTapToCountLabel)
+
+        val currentLang = sharedPreferences.getString("app_lang", "ar") ?: "ar"
+        btnLang.text = "🌐 ${currentLang.uppercase()}"
     }
 
     private fun setupRecyclerView() {
@@ -113,15 +135,15 @@ class MainActivity : AppCompatActivity() {
         btnReset.setOnClickListener {
             activeDhikr?.let { dhikr ->
                 AlertDialog.Builder(this)
-                    .setTitle("تصفير العداد")
-                    .setMessage("هل تود تصفير هذا الذكر؟")
-                    .setPositiveButton("نعم") { _, _ ->
+                    .setTitle(getString(R.string.reset_confirm_title))
+                    .setMessage(getString(R.string.reset_confirm_msg))
+                    .setPositiveButton(getString(R.string.yes)) { _, _ ->
                         dhikr.count = 0
                         saveAzkarData()
                         updateActiveDisplay()
                         adapter.notifyDataSetChanged()
                     }
-                    .setNegativeButton("إلغاء", null)
+                    .setNegativeButton(getString(R.string.no), null)
                     .show()
             }
         }
@@ -129,6 +151,31 @@ class MainActivity : AppCompatActivity() {
         btnAddDhikr.setOnClickListener {
             showAddDhikrDialog()
         }
+
+        btnLang.setOnClickListener {
+            showLanguageSelectionDialog()
+        }
+    }
+
+    private fun showLanguageSelectionDialog() {
+        val languages = arrayOf("العربية", "English", "Français")
+        val langCodes = arrayOf("ar", "en", "fr")
+        
+        val currentLang = sharedPreferences.getString("app_lang", "ar") ?: "ar"
+        val checkedItem = langCodes.indexOf(currentLang)
+
+        AlertDialog.Builder(this)
+            .setTitle(R.string.select_language)
+            .setSingleChoiceItems(languages, checkedItem) { dialog, which ->
+                val selectedLang = langCodes[which]
+                if (selectedLang != currentLang) {
+                    sharedPreferences.edit().putString("app_lang", selectedLang).apply()
+                    dialog.dismiss()
+                    recreate()
+                }
+            }
+            .setNegativeButton(R.string.btn_cancel, null)
+            .show()
     }
 
     private fun updateActiveDisplay() {
@@ -136,7 +183,7 @@ class MainActivity : AppCompatActivity() {
         tvCurrentCategory.text = dhikr.category
         tvCurrentTarget.text = getString(R.string.target_label, dhikr.target)
         tvCurrentDhikrText.text = dhikr.text
-        tvCurrentVirtue.text = if (dhikr.virtue.isNotEmpty()) dhikr.virtue else "فضل وثواب الذكر عظيم عند الله"
+        tvCurrentVirtue.text = if (dhikr.virtue.isNotEmpty()) dhikr.virtue else getString(R.string.category_default)
         tvCounterValue.text = dhikr.count.toString()
 
         val percent = if (dhikr.target > 0) {
@@ -155,8 +202,17 @@ class MainActivity : AppCompatActivity() {
         val etTarget = dialogView.findViewById<EditText>(R.id.etDhikrTarget)
         val spCategory = dialogView.findViewById<Spinner>(R.id.spCategory)
 
-        val categories = arrayOf("أذكار الصباح والمساء", "أذكار الصلاة", "استغفار وتوبة", "أدعية مأثورة", "ذكر عام")
-        val spinnerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, categories)
+        val currentLang = sharedPreferences.getString("app_lang", "ar") ?: "ar"
+        val categories = if (currentLang == "ar") {
+            arrayOf("أذكار الصباح والمساء", "أذكار الصلاة", "استغفار وتوبة", "أدعية مأثورة", "ذكر عام")
+        } else if (currentLang == "fr") {
+            arrayOf("Matin & Soir", "Invocations de Prière", "Repentance & Istighfar", "Invocations Prophétiques", "Dhikr Général")
+        } else {
+            arrayOf("Morning & Evening", "Prayer Azkar", "Repentance & Istighfar", "Prophetic Supplications", "General Dhikr")
+        }
+
+        // Fixed: Using local R.layout.simple_spinner_dropdown_item layout resource to resolve build error
+        val spinnerAdapter = ArrayAdapter(this, R.layout.simple_spinner_dropdown_item, categories)
         spCategory.adapter = spinnerAdapter
         spCategory.setSelection(4)
 
@@ -188,7 +244,7 @@ class MainActivity : AppCompatActivity() {
                 saveAzkarData()
                 adapter.updateSelectedId(newDhikr.id)
                 updateActiveDisplay()
-                Toast.makeText(this, "تمت إضافة الذكر إلى المختارة بنجاح", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.success_added), Toast.LENGTH_SHORT).show()
             }
             .setNegativeButton(R.string.btn_cancel, null)
             .create()
@@ -197,14 +253,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun confirmDelete(dhikr: Dhikr) {
         if (azkarList.size <= 1) {
-            Toast.makeText(this, "يجب أن يبقى ذكر واحد على الأقل في القائمة", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.min_dhikr_error), Toast.LENGTH_SHORT).show()
             return
         }
 
         AlertDialog.Builder(this)
             .setTitle(R.string.delete_confirm_title)
             .setMessage(R.string.delete_confirm_msg)
-            .setPositiveButton("حذف") { _, _ ->
+            .setPositiveButton(getString(R.string.yes)) { _, _ ->
                 val index = azkarList.indexOfFirst { it.id == dhikr.id }
                 if (index != -1) {
                     azkarList.removeAt(index)
@@ -217,11 +273,12 @@ class MainActivity : AppCompatActivity() {
                     updateActiveDisplay()
                 }
             }
-            .setNegativeButton("إلغاء", null)
+            .setNegativeButton(getString(R.string.no), null)
             .show()
     }
 
     private fun loadAzkarData() {
+        val currentLang = sharedPreferences.getString("app_lang", "ar") ?: "ar"
         val json = sharedPreferences.getString("saved_azkar_json", null)
         if (!json.isNullOrEmpty()) {
             val type = object : TypeToken<MutableList<Dhikr>>() {}.type
@@ -231,51 +288,44 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (azkarList.isEmpty()) {
-            // Default built-in selected Azkar
-            azkarList.add(
-                Dhikr(
-                    id = 1L,
-                    text = "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ ، سُبْحَانَ اللَّهِ الْعَظِيمِ",
-                    virtue = "حبيبتان إلى الرحمن، خفيفتان على اللسان، ثقيلتان في الميزان",
-                    category = "استغفار وتوبة",
-                    count = 0,
-                    target = 100
-                )
-            )
-            azkarList.add(
-                Dhikr(
-                    id = 2L,
-                    text = "أَسْتَغْفِرُ اللَّهَ الْعَظِيمَ وَأَتُوبُ إِلَيْهِ",
-                    virtue = "من لزم الاستغفار جعل الله له من كل هم فرجاً",
-                    category = "استغفار وتوبة",
-                    count = 0,
-                    target = 70
-                )
-            )
-            azkarList.add(
-                Dhikr(
-                    id = 3L,
-                    text = "لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ الْعَلِيِّ الْعَظِيمِ",
-                    virtue = "كنز من كنوز الجنة",
-                    category = "أدعية مأثورة",
-                    count = 0,
-                    target = 33
-                )
-            )
-            azkarList.add(
-                Dhikr(
-                    id = 4L,
-                    text = "اللَّهُمَّ صَلِّ وَسَلِّمْ عَلَى نَبِيِّنَا مُحَمَّدٍ",
-                    virtue = "من صلى علي صلاة صلى الله عليه بها عشراً",
-                    category = "أذكار الصلاة",
-                    count = 0,
-                    target = 100
-                )
-            )
+            azkarList.addAll(getDefaultAzkar(currentLang))
+        } else {
+            // Translate default items if they exist to match current language
+            azkarList.forEach { item ->
+                val defaultItem = getDefaultAzkar(currentLang).find { it.id == item.id }
+                if (defaultItem != null) {
+                    item.text = defaultItem.text
+                    item.virtue = defaultItem.virtue
+                    item.category = defaultItem.category
+                }
+            }
         }
 
         val lastSelectedId = sharedPreferences.getLong("last_selected_dhikr_id", azkarList[0].id)
         activeDhikr = azkarList.find { it.id == lastSelectedId } ?: azkarList[0]
+    }
+
+    private fun getDefaultAzkar(lang: String): List<Dhikr> {
+        return when (lang) {
+            "en" -> listOf(
+                Dhikr(1L, "Subhan-Allahi wa bihamdihi, Subhan-Allahil-Azim", "Two words are light on the tongue, heavy in the balance, beloved to the Most Merciful", "Repentance & Istighfar", 0, 100),
+                Dhikr(2L, "Astaghfirullah al-Adheem wa atoobu ilayh", "If anyone constantly seeks pardon, Allah will appoint for him a way out of every distress", "Repentance & Istighfar", 0, 70),
+                Dhikr(3L, "La hawla wa la quwwata illa billahil-Aliyyil-Azheem", "A treasure from the treasures of Paradise", "Prophetic Supplications", 0, 33),
+                Dhikr(4L, "Allahumma salli wa sallim 'ala nabiyyina Muhammad", "Whoever sends blessings upon me once, Allah sends blessings upon him ten times", "Prayer Azkar", 0, 100)
+            )
+            "fr" -> listOf(
+                Dhikr(1L, "Subhan-Allahi wa bihamdihi, Subhan-Allahil-Azim", "Deux paroles légères sur la langue, lourdes sur la balance, aimées du Tout-Miséricordieux", "Repentance & Istighfar", 0, 100),
+                Dhikr(2L, "Astaghfirullah al-Adheem wa atoobu ilayh", "Quiconque implore le pardon d'Allah, Allah lui ménagera une issue à chaque détresse", "Repentance & Istighfar", 0, 70),
+                Dhikr(3L, "La hawla wa la quwwata illa billahil-Aliyyil-Azheem", "Un trésor parmi les trésors du Paradis", "Invocations Prophétiques", 0, 33),
+                Dhikr(4L, "Allahumma salli wa sallim 'ala nabiyyina Muhammad", "Quiconque prie sur moi une fois, Allah prie sur lui dix fois", "Invocations de Prière", 0, 100)
+            )
+            else -> listOf(
+                Dhikr(1L, "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ ، سُبْحَانَ اللَّهِ الْعَظِيمِ", "حبيبتان إلى الرحمن، خفيفتان على اللسان، ثقيلتان في الميزان", "استغفار وتوبة", 0, 100),
+                Dhikr(2L, "أَسْتَغْفِرُ اللَّهَ الْعَظِيمَ وَأَتُوبُ إِلَيْهِ", "من لزم الاستغفار جعل الله له من كل هم فرجاً", "استغفار وتوبة", 0, 70),
+                Dhikr(3L, "لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ الْعَلِيِّ الْعَظِيمِ", "كنز من كنوز الجنة", "أدعية مأثورة", 0, 33),
+                Dhikr(4L, "اللَّهُمَّ صَلِّ وَسَلِّمْ عَلَى نَبِيِّنَا مُحَمَّدٍ", "من صلى علي صلاة صلى الله عليه بها عشراً", "أذكار الصلاة", 0, 100)
+            )
+        }
     }
 
     private fun saveAzkarData() {

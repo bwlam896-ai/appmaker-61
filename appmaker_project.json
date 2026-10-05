@@ -3,7 +3,7 @@
   "name": "مأذن",
   "packageId": "com.appmaker.myapp",
   "versionCode": 1,
-  "versionName": "1.1.0",
+  "versionName": "1.1.1",
   "type": "Kotlin (AI)",
   "orientation": "portrait",
   "fullscreen": false,
@@ -28,5 +28,5 @@
     "foregroundService": false,
     "biometric": false
   },
-  "updatedAt": "2026-10-03T10:41:43.408Z"
+  "updatedAt": "2026-10-05T20:22:22.341Z"
 }

@@ -39,22 +39,40 @@
                     android:id="@+id/tvTotalCounts"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="مجموع التسبيحات: 0"
+                    android:text="Total Counts: 0"
                     android:textColor="@color/accent"
                     android:textSize="11sp" />
             </LinearLayout>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnAddDhikr"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="38dp"
+                android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:backgroundTint="@color/primary"
-                android:text="@string/add_dhikr_action"
-                android:textColor="#FFFFFF"
-                android:textSize="12sp"
-                app:cornerRadius="8dp" />
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <!-- Language Switcher Button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnLang"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="38dp"
+                    android:text="🌐 AR"
+                    android:textColor="@color/accent"
+                    android:textSize="12sp"
+                    android:layout_marginEnd="4dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnAddDhikr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="38dp"
+                    android:backgroundTint="@color/primary"
+                    android:text="@string/add_dhikr_action"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp"
+                    app:cornerRadius="8dp" />
+            </LinearLayout>
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
 
@@ -98,7 +116,7 @@
                             android:background="@drawable/badge_bg"
                             android:paddingHorizontal="10dp"
                             android:paddingVertical="4dp"
-                            android:text="ذكر مختار"
+                            android:text="General Dhikr"
                             android:textColor="@color/accent"
                             android:textSize="11sp" />
 
@@ -107,7 +125,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
-                            android:text="الهدف: 100"
+                            android:text="Target: 100"
                             android:textColor="@color/text_secondary"
                             android:textSize="12sp"
                             android:textStyle="bold" />
@@ -133,7 +151,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:gravity="center"
-                        android:text="حبيبتان إلى الرحمن، خفيفتان على اللسان، ثقيلتان في الميزان"
+                        android:text="Two words are light on the tongue, heavy in the balance, beloved to the Most Merciful"
                         android:textColor="@color/text_secondary"
                         android:textSize="12sp" />
 
@@ -165,6 +183,7 @@
                                 android:textStyle="bold" />
 
                             <TextView
+                                android:id="@+id/tvTapToCountLabel"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/tap_to_count"
@@ -204,6 +223,7 @@
 
             <!-- List Header -->
             <TextView
+                android:id="@+id/tvSelectedAzkarTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"

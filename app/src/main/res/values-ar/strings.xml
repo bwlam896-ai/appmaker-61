@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">الأذكار المختارة</string>
+    <string name="add_dhikr_action">زد ذكراً</string>
+    <string name="selected_azkar_title">قائمة الأذكار المختارة</string>
+    <string name="tap_to_count">اضغط للذكر</string>
+    <string name="reset_label">تصفير</string>
+    <string name="target_label">الهدف: %d</string>
+    <string name="category_default">ذكر عام</string>
+    <string name="add_dhikr_dialog_title">زد ذكراً إلى الأذكار المختارة</string>
+    <string name="dhikr_text_hint">نص الذكر المبارك...</string>
+    <string name="dhikr_virtue_hint">فضله وثوابه (اختياري)...</string>
+    <string name="dhikr_target_hint">العدد المستهدف (مثال: 33)</string>
+    <string name="btn_save">إضافة وحفظ</string>
+    <string name="btn_cancel">إلغاء</string>
+    <string name="total_counts_label">مجموع التسبيحات: %d</string>
+    <string name="delete_confirm_title">حذف الذكر</string>
+    <string name="delete_confirm_msg">هل أنت متأكد من حذف هذا الذكر من المختارة؟</string>
+    <string name="error_empty_text">يرجى كتابة نص الذكر أولاً</string>
+    <string name="reset_confirm_title">تصفير العداد</string>
+    <string name="reset_confirm_msg">هل تود تصفير هذا الذكر؟</string>
+    <string name="yes">نعم</string>
+    <string name="no">إلغاء</string>
+    <string name="min_dhikr_error">يجب أن يبقى ذكر واحد على الأقل في القائمة</string>
+    <string name="success_added">تمت إضافة الذكر إلى المختارة بنجاح</string>
+    <string name="select_language">اختر اللغة</string>
+</resources>
